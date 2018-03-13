@@ -46,7 +46,8 @@ function remote-branches {
 	# Ensure we're always in git root
 	pushd "$monorepo_dir"
 	# Cleanest way to list all branches without text editing rigmarole
-	ls ".git/refs/remotes/$1/"
+	# ls ".git/refs/remotes/$1/"
+  git branch -r | grep -oP "$1/\K.*?(.*)"
 	popd
 }
 
@@ -79,7 +80,7 @@ function create-mono {
 		fi
 		echo "Merging in $repo.." >&2
 		git remote add "$name" "$repo"
-		echo "Fetching $name.." >&2 
+		echo "Fetching $name.." >&2
 		git fetch -qa "$name"
 		# Merge every branch from the sub repo into the mono repo, into a
 		# branch of the same name (create one if it doesn't exist).
